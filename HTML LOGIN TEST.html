@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>비밀번호 로그인</title>
+<style>
+  body { font-family: Arial; padding: 20px; }
+  .row { margin-bottom: 10px; }
+  input { width: 80px; text-align: center; }
+  button { margin-left: 5px; }
+  .icon { font-size: 20px; margin-left: 10px; }
+</style>
+</head>
+<body>
+
+<h2>비밀번호 로그인</h2>
+<div id="container"></div>
+
+<script>
+const URL = "WEB_APP_URL_HERE";
+let answers = {};
+
+// 1️⃣ 정답 불러오기
+fetch(URL)
+  .then(res => res.json())
+  .then(data => {
+    answers = data;
+    render();
+  });
+
+// 2️⃣ 화면 그리기
+function render() {
+  const c = document.getElementById("container");
+  for (let i = 1; i <= 10; i++) {
+    c.innerHTML += `
+      <div class="row">
+        ${i}번
+        <input type="password" maxlength="4" id="pw${i}">
+        <button onclick="check(${i})">로그인</button>
+        <span class="icon" id="icon${i}">🔐</span>
+      </div>
+    `;
+  }
+}
+
+// 3️⃣ 비밀번호 검사
+function check(index) {
+  const input = document.getElementById("pw" + index).value;
+  const icon = document.getElementById("icon" + index);
+
+  if (input === answers[index]) {
+    icon.textContent = "🔓";
+  } else {
+    alert("비밀번호가 틀렸습니다");
+  }
+}
+</script>
+
+</body>
+</html>
